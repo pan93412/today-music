@@ -1,0 +1,185 @@
+<html>
+<head>
+  <title class='theme-title-tag'>[Oops]</title>
+  <meta charset='UTF-8' />
+  <meta name='viewport' value='width=device-width, initial-scale=1, shrink-to-fit=no' />
+  <link rel='stylesheet' href='css/bulma.css' />
+  <link rel='stylesheet' href='css/style.css' />
+  <style>
+    tr > td.info-td {
+      text-align: right;
+    }
+    
+    button.home-btn {
+      margin-left: 0.4rem;
+    }
+
+    .player-subtitle-block {
+      text-align: center;
+    }
+
+    .bg {
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      position: fixed;
+      z-index: -999;
+      filter: blur(20px);
+      opacity: 0.3;
+    }
+    
+    #audio-player {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body id='theme-body'>
+  <div class='bg'></div> <!-- 背景圖 -->
+  <!-- 插入前程式碼 -->
+  <div class='columns'>
+    <div class='column is-5'>
+      <h2 class='title theme-title'>
+        請啟用 JavaScript！
+      </h2>
+      <h4 class='subtitle theme-subtitle'>
+        不開 JavaScript 的話可是什麼都用不了的呢！
+      </h4>
+      <p class='theme-desc'>
+        <figure>
+          <figcaption>▶️ <span class='playing'>[未選擇]</span></figcaption>
+          <audio controls src='' id='audio-player'>
+            <track default id='audio-player-track' src=''></track>
+          </audio>
+          <figcaption class='player-subtitle-block'>
+            <span class='player-subtitle'>沒有歌詞！</span>
+          </figcaption>
+        </figure>
+      </p>
+    </div>
+    <div class='column is-7'>
+      <div class='container'>
+        <h4 class='title is-4'><a id='serv-info'></a>音樂清單</h4>
+        <table class='table is-hoverable is-fullwidth' id='music-list'>
+        </table>
+      </div>
+    </div>
+  </div>
+  <p>
+    版面 <code>bulma-nginx-fancyindex</code>
+    由 <a href='https://github.com/pan93412'>pan93412</a> 挪用至此頁面。
+    <a href='https://github.com/pan93412/bulma-nginx-fancyindex'><b>GitHub</b></a>
+  </p>
+</body>
+<script src='today.js'></script>
+<script>
+/* Utilies */
+/**
+ * 將所有元素的 innerHTML 設為指定值。
+ *
+ * @param {HTMLElement} elem 元素
+ * @param {string} to 設成？
+ */
+function setAllElementInnerHTML(elem, to) {
+  for (let i of elem) i.innerHTML = to
+}
+
+/* 音樂列表 */
+const musicList = document.getElementById('music-list')
+const elemId = []
+
+function select(toSelect) {
+  if (currentSelected) currentSelected.classList.remove('is-selected')
+  currentSelected = toSelect
+  toSelect.classList.add('is-selected')
+}
+
+/**
+ * 將播放器切換到？
+ *
+ * @param {string} musicID 音樂編號
+ */
+function switchTo(musicID) {
+  const elemID = 'm-' + musicID // 預設元件 ID 就是 `#m-[音樂編號]`
+  player.src = db.list[musicID].audioFile // 設定播放器 source
+  setAllElementInnerHTML(currentPlaying, db.list[musicID].displayName) // 設定播放器標題
+  bg.style.backgroundImage = `url('${db.list[musicID].albumImage}')` // 將背景圖設成專輯圖
+
+  if (db.list[musicID].subtitle) { // 如果有字幕的話……
+    currentTrack.src = db.list[musicID].subtitle
+    player.textTracks[0].addEventListener('cuechange', subtListener)
+  } else {
+    currentTrack.src = ''
+    player.textTracks[0].removeEventListener('cuechange', subtListener)
+    noSubt()
+  }
+
+  select(document.getElementById(elemID)) // 標示播放項目
+}
+
+/* 音樂播放器整體 */
+const player = document.getElementById('audio-player')
+const currentTrack = document.getElementById('audio-player-track')
+const currentPlaying = document.getElementsByClassName('playing')
+
+/* 字幕檢視器 */
+const subtitleViewer = document.getElementsByClassName('player-subtitle')
+const str_noSelected = '沒有歌詞！' // 請確保與上方 HTML 一致。
+const subtListener = e => {
+  for (let i of subtitleViewer) {
+    let subt = e.target.activeCues.length > 0 ? 
+               e.target.activeCues[0].text :
+              '<i>[間奏]</i>'
+
+    lastSubtitle = i.dataset.subt || '> 開始！<'
+    i.dataset.subt = subt
+    i.innerHTML = `<span style='opacity: 50%'>${lastSubtitle}</span><br>🎤 ${i.dataset.subt}`
+  }
+}
+var currentSelected = null
+var lastSubtitle = '' // 目前的字幕
+function noSubt() { // 當沒字幕時
+  for (let i of subtitleViewer) {
+    i.innerHTML = str_noSelected
+  }
+}
+
+/* 背景圖 */
+const bg = document.getElementsByClassName('bg')[0]
+
+/* 標題 / 副標題 */
+const pageTitleTag = document.getElementsByClassName('theme-title-tag')
+const pageTitle = document.getElementsByClassName('theme-title')
+const pageSubtitle = document.getElementsByClassName('theme-subtitle')
+
+/* Main */
+for (let i in db.list) { // 新增 today.js 內的音樂至音樂列表
+  elemId.push('m-' + i)
+  musicList.innerHTML += `
+<tr id='m-${i}'>
+  <td>${db.list[i].displayName}</td>
+  <td class='info-td'>
+    <a href='#m-${i}-listen'>分享</a>
+    <a id='m-${i}-listen' href='javascript:void(0)' data-id='${i}'>收聽</a>
+  </td>
+</tr>`
+}
+
+for (let i of elemId) { // 對音樂列表的每個東西都加上事件
+  document.getElementById(i + '-listen').addEventListener('click', e => {
+    switchTo(e.target.dataset.id)
+    player.play()
+  })
+  document.getElementById(i).addEventListener('click', e => {
+    select(document.getElementById(e.currentTarget.id))
+  })
+}
+
+switchTo(db.current) // 預設播放項目就是 db.current 喔
+setAllElementInnerHTML(pageTitleTag, titleTag) // 設定 <title>
+setAllElementInnerHTML(pageTitle, title) // 設定標題
+setAllElementInnerHTML(pageSubtitle, subtitle) // 設定副標題
+</script>
+</html>
