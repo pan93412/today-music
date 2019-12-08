@@ -9,9 +9,9 @@ const db = {
   list: {
     '音樂 ID': {
       displayName: '音樂顯示名稱',
-      albumImage: '專輯圖片連結', // 可選，若不需要請改成 `''`
+      albumImage: '專輯圖片連結', // 可選，若不需要請刪除這行
       audioFile: '音樂檔案連結',
-      subtitle: 'music/20191208-Mili-UFO.en.vtt'
+      subtitle: '字幕檔案 (vtt) 連結' // 可選，若不需要請刪除這行
     }
   }
 }
