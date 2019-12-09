@@ -87,6 +87,7 @@ function setAllElementInnerHTML(elem, to) {
 }
 
 /* 音樂列表 */
+var currentSelected = null
 const musicList = document.getElementById('music-list')
 const elemId = []
 
@@ -143,7 +144,6 @@ const subtListener = e => {
     `
   }
 }
-var currentSelected = null
 function noSubt() { // 當沒字幕時
   for (let i of subtitleViewer) {
     i.innerHTML = str_noSelected
