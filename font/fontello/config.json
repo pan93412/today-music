@@ -7,22 +7,10 @@
   "ascent": 850,
   "glyphs": [
     {
-      "uid": "33194d4a025fbf12baca54579afe4c8e",
-      "css": "at",
-      "code": 61946,
-      "src": "fontawesome"
-    },
-    {
       "uid": "895405dfac8a3b7b2f23b183c6608ee6",
       "css": "export",
       "code": 59392,
       "src": "fontawesome"
-    },
-    {
-      "uid": "b08cfe8039de2ce815686aced2caef06",
-      "css": "download",
-      "code": 59393,
-      "src": "entypo"
     },
     {
       "uid": "5717236f6134afe2d2a278a5c9b3927a",
