@@ -1,7 +1,9 @@
-/* 設定 */
-const titleTag = '每日推薦音樂' // <title> 標籤的內容 
-const title = '每日推薦音樂<sup>0.1α</sup>' // 標題
-const subtitle = '' // 副標題
+/* Meta 中繼設定 */
+const pageMetaOptions = {
+  titleTag: '每日推薦音樂', // <title> 標籤的內容
+  title: '每日推薦音樂<sup>α</sup>', // 標題
+  subtitle: `` // 副標題
+}
 
 /* 音樂列表 */
 const db = {
