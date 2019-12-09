@@ -6,36 +6,6 @@
   <link rel='stylesheet' href='css/bulma.css' />
   <link rel='stylesheet' href='css/style.css' />
   <link rel='stylesheet' href='font/fontello/css/fontello.css' />
-  <style>
-    tr > td.info-td {
-      text-align: right;
-    }
-    
-    button.home-btn {
-      margin-left: 0.4rem;
-    }
-
-    .player-subtitle-block {
-      text-align: center;
-    }
-
-    .bg {
-      background-size: cover;
-      background-repeat: no-repeat;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: 0;
-      position: fixed;
-      z-index: -999; /* 移到最下層 */
-      filter: blur(20px);
-      opacity: 0.3; /* 70% 透明 */
-    }
-    
-    #audio-player {
-      margin-bottom: 1rem;
-    }
-  </style>
 </head>
 <body id='theme-body'>
   <div class='bg'></div> <!-- 背景圖 -->
@@ -75,120 +45,11 @@
   </p>
 </body>
 
-<script src='today.js'></script>
-<script>
-/* Utilies */
-/**
- * 將所有元素的 innerHTML 設為指定值。
- *
- * @param {HTMLElement} elem 元素
- * @param {string} to 設成？
- */
-function setAllElementInnerHTML(elem, to) {
-  for (let i of elem) i.innerHTML = to
-}
-
-/* 音樂列表 */
-var currentSelected = null
-const musicList = document.getElementById('music-list')
-const elemId = []
-
-function select(toSelect) {
-  if (currentSelected) currentSelected.classList.remove('is-selected')
-  currentSelected = toSelect
-  toSelect.classList.add('is-selected')
-}
-
-/**
- * 將播放器切換到？
- *
- * @param {string} musicID 音樂編號
- */
-function switchTo(musicID) {
-  const elemID = 'm-' + musicID // 預設元件 ID 就是 `#m-[音樂編號]`
-  player.src = db.list[musicID].audioFile // 設定播放器 source
-  setAllElementInnerHTML(currentPlaying, db.list[musicID].displayName) // 設定播放器標題
-  bg.style.backgroundImage = `url('${db.list[musicID].albumImage || ''}')` // 將背景圖設成專輯圖
-
-  if (db.list[musicID].subtitle) { // 如果有字幕的話……
-    currentTrack.src = db.list[musicID].subtitle
-    player.textTracks[0].addEventListener('cuechange', subtListener)
-  } else {
-    currentTrack.src = ''
-    player.textTracks[0].removeEventListener('cuechange', subtListener)
-    noSubt()
-  }
-
-  select(document.getElementById(elemID)) // 標示播放項目
-}
-
-/* 音樂播放器整體 */
-const player = document.getElementById('audio-player')
-const currentTrack = document.getElementById('audio-player-track')
-const currentPlaying = document.getElementsByClassName('playing')
-
-/* 字幕檢視器 */
-var lastSubtitle = '' // 目前的字幕
-const subtitleViewer = document.getElementsByClassName('player-subtitle')
-const str_noSelected = '' // 請確保與上方 HTML 一致。
-const subtListener = e => {
-  for (let i of subtitleViewer) {
-    if (i.dataset.subt || i.dataset.subt !== '') // 如果字幕是空的，就別放進去 lastSubtitle
-      lastSubtitle = i.dataset.subt // 上一條歌詞
-
-    i.dataset.subt = e.target.activeCues.length > 0 ?
-      e.target.activeCues[0].text :
-      '' // 本條歌詞
-
-    i.innerHTML = `
-      <span style='opacity: 50%'>${lastSubtitle || '' /* 防止 undefined 問題*/ }</span> <!-- 上一條歌詞 -->
-      <br>🎤 ${i.dataset.subt} <!-- 本條歌詞 -->
-    `
-  }
-}
-function noSubt() { // 當沒字幕時
-  for (let i of subtitleViewer) {
-    i.innerHTML = str_noSelected
-  }
-}
-
-/* 背景圖 */
-const bg = document.getElementsByClassName('bg')[0]
-
-/* 標題 / 副標題 */
-const pageMeta = {
-  titleTag: document.getElementsByClassName('theme-title-tag'), // <title>
-  title: document.getElementsByClassName('theme-title'), // 標題
-  subtitle: document.getElementsByClassName('theme-subtitle') // 副標題
-} // 請確保項目名稱與 today.js -> pageMetaOptions 的一致！
-
-/* Main */
-for (let i in db.list) { // 新增 today.js 內的音樂至音樂列表
-  elemId.push('m-' + i)
-  musicList.innerHTML += `
-<tr id='m-${i}'>
-  <td>${db.list[i].displayName}</td>
-  <td class='info-td'>
-    <a href='#m-${i}-listen'><i class='icon-export'></i></a>
-    <a id='m-${i}-listen' href='javascript:void(0)' data-id='${i}'><i class='icon-play-circled'></i></a>
-  </td>
-</tr>`
-}
-
-for (let i of elemId) { // 對音樂列表的每個東西都加上事件
-  document.getElementById(i + '-listen').addEventListener('click', e => {
-    switchTo(e.currentTarget.dataset.id)
-    player.play()
-  })
-  document.getElementById(i).addEventListener('click', e => {
-    select(document.getElementById(e.currentTarget.id))
-  })
-}
-
-switchTo(db.current) // 預設播放項目就是 db.current 喔
-
-for (let i in pageMeta) {
-  setAllElementInnerHTML(pageMeta[i], pageMetaOptions[i])
-} // 設定 Meta
+<script src='today.js'></script> <!-- 設定檔 & 歌單 -->
+<script src='js/utils.js'></script> <!-- 工具函式部份 -->
+<script src='js/player.js'></script> <!-- 音樂播放器部份 -->
+<script src='js/musicList.js'></script> <!-- 音樂清單部份 -->
+<script src='js/subtitleViewer.js'></script> <!-- 字幕檢視器部份 -->
+<script src='js/script.js'></script> <!-- 最後，載入主程式 -->
 </script>
 </html>

@@ -3,6 +3,30 @@
   padding: 6rem;
 }
 
+tr > td.info-td {
+  text-align: right;
+}
+
 button.home-btn {
   margin-left: 0.4rem;
 }
+
+.player-subtitle-block {
+  text-align: center;
+}
+
+.bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: -999; /* 移到最下層 */
+  filter: blur(20px);
+  opacity: 0.3; /* 70% 透明 */
+}
+
+#audio-player {
+  margin-bottom: 1rem;
