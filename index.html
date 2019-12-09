@@ -54,7 +54,7 @@
             <track default id='audio-player-track' src=''></track>
           </audio>
           <figcaption class='player-subtitle-block'>
-            <span class='player-subtitle'>沒有歌詞！</span>
+            <span class='player-subtitle'></span>
           </figcaption>
         </figure>
       </p>
@@ -125,21 +125,25 @@ const currentTrack = document.getElementById('audio-player-track')
 const currentPlaying = document.getElementsByClassName('playing')
 
 /* 字幕檢視器 */
+var lastSubtitle = '' // 目前的字幕
 const subtitleViewer = document.getElementsByClassName('player-subtitle')
-const str_noSelected = '沒有歌詞！' // 請確保與上方 HTML 一致。
+const str_noSelected = '' // 請確保與上方 HTML 一致。
 const subtListener = e => {
   for (let i of subtitleViewer) {
-    let subt = e.target.activeCues.length > 0 ? 
-               e.target.activeCues[0].text :
-              '<i>[間奏]</i>'
+    if (i.dataset.subt || i.dataset.subt !== '') // 如果字幕是空的，就別放進去 lastSubtitle
+      lastSubtitle = i.dataset.subt // 上一條歌詞
 
-    lastSubtitle = i.dataset.subt || '> 開始！<'
-    i.dataset.subt = subt
-    i.innerHTML = `<span style='opacity: 50%'>${lastSubtitle}</span><br>🎤 ${i.dataset.subt}`
+    i.dataset.subt = e.target.activeCues.length > 0 ?
+      e.target.activeCues[0].text :
+      '' // 本條歌詞
+
+    i.innerHTML = `
+      <span style='opacity: 50%'>${lastSubtitle || '' /* 防止 undefined 問題*/ }</span> <!-- 上一條歌詞 -->
+      <br>🎤 ${i.dataset.subt} <!-- 本條歌詞 -->
+    `
   }
 }
 var currentSelected = null
-var lastSubtitle = '' // 目前的字幕
 function noSubt() { // 當沒字幕時
   for (let i of subtitleViewer) {
     i.innerHTML = str_noSelected
