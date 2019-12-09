@@ -156,20 +156,23 @@ const pageSubtitle = document.getElementsByClassName('theme-subtitle')
 
 /* Main */
 for (let i in db.list) { // 新增 today.js 內的音樂至音樂列表
-  let elemId = 'm-' + i
+  elemId.push('m-' + i)
   musicList.innerHTML += `
 <tr id='m-${i}'>
   <td>${db.list[i].displayName}</td>
   <td class='info-td'>
     <a href='#m-${i}-listen'>分享</a>
     <a id='m-${i}-listen' href='javascript:void(0)' data-id='${i}'>收聽</a>
-  </td> </tr>
-  // 對音樂列表的每個東西都加上事件
-  document.getElementById(elemId + '-listen').addEventListener('click', e => {
+  </td>
+</tr>`
+}
+
+for (let i of elemId) { // 對音樂列表的每個東西都加上事件
+  document.getElementById(i + '-listen').addEventListener('click', e => {
     switchTo(e.target.dataset.id)
     player.play()
   })
-  document.getElementById(elemId).addEventListener('click', e => {
+  document.getElementById(i).addEventListener('click', e => {
     select(document.getElementById(e.currentTarget.id))
   })
 }
