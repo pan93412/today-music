@@ -177,7 +177,7 @@ for (let i in db.list) { // 新增 today.js 內的音樂至音樂列表
 
 for (let i of elemId) { // 對音樂列表的每個東西都加上事件
   document.getElementById(i + '-listen').addEventListener('click', e => {
-    switchTo(e.target.dataset.id)
+    switchTo(e.currentTarget.dataset.id)
     player.play()
   })
   document.getElementById(i).addEventListener('click', e => {
