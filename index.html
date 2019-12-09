@@ -5,6 +5,7 @@
   <meta name='viewport' value='width=device-width, initial-scale=1, shrink-to-fit=no' />
   <link rel='stylesheet' href='css/bulma.css' />
   <link rel='stylesheet' href='css/style.css' />
+  <link rel='stylesheet' href='font/fontello/css/fontello.css' />
   <style>
     tr > td.info-td {
       text-align: right;
@@ -49,7 +50,7 @@
       </h4>
       <p class='theme-desc'>
         <figure>
-          <figcaption>▶️ <span class='playing'>【未選擇】</span></figcaption>
+          <figcaption><i class='icon-play-circled'></i> <span class='playing'>【未選擇】</span></figcaption>
           <audio controls src='' id='audio-player'>
             <track default id='audio-player-track' src=''></track>
           </audio>
@@ -70,9 +71,10 @@
   <p>
     版面 <code><a href='https://github.com/pan93412/bulma-nginx-fancyindex'>bulma-nginx-fancyindex</a></code>
     由 <a href='https://github.com/pan93412'>pan93412</a> 挪用至此頁面。
-    <a href='https://github.com/pan93412/today-music'><b>GitHub</b></a>
+    <a href='https://github.com/pan93412/today-music'><i class='icon-github'></i></a>
   </p>
 </body>
+
 <script src='today.js'></script>
 <script>
 /* Utilies */
@@ -167,8 +169,8 @@ for (let i in db.list) { // 新增 today.js 內的音樂至音樂列表
 <tr id='m-${i}'>
   <td>${db.list[i].displayName}</td>
   <td class='info-td'>
-    <a href='#m-${i}-listen'>分享</a>
-    <a id='m-${i}-listen' href='javascript:void(0)' data-id='${i}'>收聽</a>
+    <a href='#m-${i}-listen'><i class='icon-export'></i></a>
+    <a id='m-${i}-listen' href='javascript:void(0)' data-id='${i}'><i class='icon-play-circled'></i></a>
   </td>
 </tr>`
 }
