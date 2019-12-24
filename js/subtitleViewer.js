@@ -11,7 +11,7 @@ const subtListener = e => {
       lastSubtitle = i.dataset.subt // 上一條歌詞
 
     i.dataset.subt = e.target.activeCues.length > 0 ?
-      e.target.activeCues[0].text :
+      e.target.activeCues[0].text.replace('\n', '<br>') :
       '' // 本條歌詞
 
     i.innerHTML = `
