@@ -25,6 +25,14 @@ function switchTo(musicID) {
   player.src = db.list[musicID].audioFile // 設定播放器 source
   setAllElementInnerHTML(currentPlaying, db.list[musicID].displayName) // 設定播放器標題
   bg.style.backgroundImage = `url('${db.list[musicID].albumImage || ''}')` // 將背景圖設成專輯圖
+  bg.animate([
+    {
+      opacity: 0
+    },
+    {
+      opacity: 0.3
+    }
+  ], 1000)
 
   if (db.list[musicID].subtitle) { // 如果有字幕的話……
     currentTrack.src = db.list[musicID].subtitle
