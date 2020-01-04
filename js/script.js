@@ -2,9 +2,6 @@
  * main - 主程式
  */
 
-/* 背景圖 */
-const bg = document.getElementsByClassName('bg')[0]
-
 /* 標題 / 副標題 */
 const pageMeta = {
   titleTag: document.getElementsByClassName('theme-title-tag'), // <title>

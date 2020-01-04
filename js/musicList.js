@@ -3,6 +3,8 @@
  * 部份與播放器相關的東西在 player.js
  */
 
+/* 背景圖 */
+const bg = document.getElementsByClassName('bg')[0]
 let currentSelected = null
 const musicList = document.getElementById('music-list')
 const elemId = []
