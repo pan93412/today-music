@@ -12,22 +12,3 @@
 function setAllElementInnerHTML(elem, to) {
   for (let i of elem) i.innerHTML = to
 }
-
-/**
- * 淡入淡出。
- * 
- * 假如已經淡入過，那再次執行則為淡出。反之亦然。
- * 
- * @param {HTMLElement} elem 元素
- */
-function fade(elem) {
-  if (elem.classList.contains('fade-hide')) {
-    elem.classList.remove('fade-hide')
-    elem.classList.add('fade-show')
-    return null
-  } else if (elem.classList.contains('fade-show')) {
-    elem.classList.remove('fade-show')
-  }
-  elem.classList.add('fade-hide')
-  return null
-}

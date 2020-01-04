@@ -15,6 +15,17 @@ function select(toSelect) {
   toSelect.classList.add('is-selected')
 }
 
+const fadeHide = callback => {
+  bg.classList.remove('show')
+  bg.classList.add('hide')
+  setTimeout(callback, 100)
+}
+
+const fadeShow = () => {
+  bg.classList.add('show')
+  bg.classList.remove('hide')
+}
+
 /**
  * 將播放器切換到？
  *
@@ -25,7 +36,7 @@ function switchTo(musicID) {
   player.src = db.list[musicID].audioFile // 設定播放器 source
   setAllElementInnerHTML(currentPlaying, db.list[musicID].displayName) // 設定播放器標題
   bg.style.backgroundImage = `url('${db.list[musicID].albumImage || ''}')` // 將背景圖設成專輯圖
-  fade(bg)
+  fadeHide(fadeShow)
 
   if (db.list[musicID].subtitle) { // 如果有字幕的話……
     currentTrack.src = db.list[musicID].subtitle
@@ -37,5 +48,4 @@ function switchTo(musicID) {
   }
 
   select(document.getElementById(elemID)) // 標示播放項目
-  fade(bg)
 }

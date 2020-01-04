@@ -32,12 +32,11 @@ button.home-btn {
   margin-bottom: 1rem;
 }
 
-/* Fade In / Out */
-.fade-hide {
+/* Fade In */
+.hide {
   opacity: 0;
 }
 
-.fade-show {
-  opacity: 0.3;
+.show {
   transition: opacity 4000ms;
 }
