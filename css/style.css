@@ -30,3 +30,14 @@ button.home-btn {
 
 #audio-player {
   margin-bottom: 1rem;
+}
+
+/* Fade In / Out */
+.fade-hide {
+  opacity: 0;
+}
+
+.fade-show {
+  opacity: 0.3;
+  transition: opacity 4000ms;
+}
